@@ -1,15 +1,73 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Promise Chaining Example</title>
+</head>
+<body>
 
-<html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+<input type="number" id="ip" placeholder="Enter a number" />
+<button id="btn">Start</button>
+<div id="output"></div>
 
-  <body>
-    <!-- do not change this code -->
-    <input type="number" id="ip" />
-    <button id="btn">Start</button>
-    <div id="output"></div>
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+<script>
+  const input = document.getElementById('ip');
+  const button = document.getElementById('btn');
+  const output = document.getElementById('output');
+
+  button.onclick = () => {
+    const num = Number(input.value);
+    if (isNaN(num)) {
+      output.textContent = 'Please enter a valid number';
+      return;
+    }
+
+    output.textContent = ''; // Clear previous output
+
+    // First promise: resolves after 2 seconds with the input number
+    new Promise((resolve) => {
+      setTimeout(() => {
+        output.textContent = `Result: ${num}`;
+        resolve(num);
+      }, 2000);
+    })
+    // Second promise: multiply by 2 after 2 seconds
+    .then(prevNum => new Promise((resolve) => {
+      setTimeout(() => {
+        const result = prevNum * 2;
+        output.textContent = `Result: ${result}`;
+        resolve(result);
+      }, 2000);
+    }))
+    // Third promise: subtract 3 after 1 second
+    .then(prevNum => new Promise((resolve) => {
+      setTimeout(() => {
+        const result = prevNum - 3;
+        output.textContent = `Result: ${result}`;
+        resolve(result);
+      }, 1000);
+    }))
+    // Fourth promise: divide by 2 after 1 second
+    .then(prevNum => new Promise((resolve) => {
+      setTimeout(() => {
+        const result = prevNum / 2;
+        output.textContent = `Result: ${result}`;
+        resolve(result);
+      }, 1000);
+    }))
+    // Fifth promise: add 10 after 1 second
+    .then(prevNum => new Promise((resolve) => {
+      setTimeout(() => {
+        const result = prevNum + 10;
+        output.textContent = `Final Result: ${result}`;
+        resolve(result);
+      }, 1000);
+    }))
+    .catch(err => {
+      output.textContent = `Error: ${err}`;
+    });
+  };
+</script>
+
+</body>
 </html>
